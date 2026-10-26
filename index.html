@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="LineTrail turns any image into clean, hand-drawn line art directly in your browser."
+    />
+    <meta name="theme-color" content="#f3f0e9" />
+    <title>LineTrail — Image to Line Art</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231c1b19'/%3E%3Cpath d='M18 44c9-3 14-8 17-17 2-6 6-8 11-7-5 3-7 7-8 13-2 11-8 16-20 18Z' fill='%23f3f0e9'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-texture" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="LineTrail home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44" fill="none">
+            <path d="M8.5 29.5c7.4-1.4 11.7-5.4 14.2-13.6 1.5-4.8 5-6.6 9.4-5.2" />
+            <path d="M10 32.8c7.8-1.7 13.8-5.9 16.9-12.7 2.3-5 6.4-7.2 11.6-5.8" />
+            <path d="M8.5 10.5h4M10.5 8.5v4" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>LineTrail</strong>
+          <small>LINE ART STUDIO</small>
+        </span>
+      </a>
+
+      <div class="header-center" aria-label="Privacy">
+        <span class="status-dot"></span>
+        <span>Private by default. Processed on this device.</span>
+      </div>
+
+      <nav class="header-actions" aria-label="Site navigation">
+        <button class="text-button" id="helpButton" type="button">
+          How it works
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" />
+          </svg>
+        </button>
+        <span class="version-tag">STUDIO / 01</span>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span>IMAGE TO LINE</span>
+            <span class="eyebrow-line"></span>
+            <span>AN IMAGE-TO-LINE STUDIO</span>
+          </p>
+          <h1 id="pageTitle">Photos in.&nbsp;<br /><em>Lines out.</em></h1>
+        </div>
+        <div class="hero-side">
+          <p class="hero-description">
+            Upload an image and get clean, hand-drawn line art<br />
+            in seconds. No sign-up. No cloud upload.
+          </p>
+          <div class="hero-facts" aria-label="Features">
+            <span><i>01</i> On-device</span>
+            <span><i>02</i> Up to 2800 px</span>
+            <span><i>03</i> Free to use</span>
+          </div>
+        </div>
+        <svg class="hero-stroke" viewBox="0 0 260 72" fill="none" aria-hidden="true">
+          <path d="M2 56c39-5 74-15 105-30C135 10 163 6 196 11c25 4 43-1 61-8" />
+          <path d="M7 64c48-3 84-13 118-29 27-13 57-17 89-10 13 3 25 2 38-1" />
+        </svg>
+      </section>
+
+      <section class="studio" aria-label="Line art editor">
+        <aside class="control-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">CONTROL DESK</p>
+              <h2>Adjustments</h2>
+            </div>
+            <button class="icon-text-button" id="resetButton" type="button" title="Reset all settings">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4.4 7.3A6.3 6.3 0 1 1 3.8 12" />
+                <path d="M3.8 3.7v4h4" />
+              </svg>
+              Reset
+            </button>
+          </div>
+
+          <section class="control-section upload-section" aria-labelledby="uploadTitle">
+            <div class="section-title">
+              <h3 id="uploadTitle"><span>01</span> Choose an image</h3>
+              <span id="fileRequirement">Max 50 MB</span>
+            </div>
+
+            <input id="fileInput" type="file" accept="image/*" hidden />
+            <div
+              class="dropzone"
+              id="dropzone"
+              role="button"
+              tabindex="0"
+              aria-label="Choose or drop an image"
+            >
+              <div class="dropzone-empty" id="dropzoneEmpty">
+                <span class="upload-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M16 22V8m0 0-5 5m5-5 5 5" />
+                    <path d="M7 19.5v3.2c0 1.8 1.4 3.3 3.3 3.3h11.4c1.9 0 3.3-1.5 3.3-3.3v-3.2" />
+                  </svg>
+                </span>
+                <span class="dropzone-title">Drop an image or browse</span>
+                <span class="dropzone-subtitle">or press Ctrl / ⌘ + V to paste</span>
+              </div>
+              <div class="dropzone-loaded" id="dropzoneLoaded" hidden>
+                <span class="file-thumbnail">
+                  <img id="fileThumbnail" alt="" />
+                </span>
+                <span class="file-copy">
+                  <strong id="fileName">Image name</strong>
+                  <small id="fileMeta">0 × 0 px</small>
+                </span>
+                <span class="replace-file" title="Replace image">
+                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M4 15.5h12M6 12.6l1-3.3L13.4 3 17 6.6 10.7 13 6 12.6Z" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <p class="privacy-note">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="3.3" y="7" width="9.4" height="6.2" rx="1.6" />
+                <path d="M5.2 7V5.4a2.8 2.8 0 0 1 5.6 0V7" />
+              </svg>
+              Images stay in your browser. Nothing is uploaded.
+            </p>
+          </section>
+
+          <section class="control-section" aria-labelledby="styleTitle">
+            <div class="section-title">
+              <h3 id="styleTitle"><span>02</span> Line style</h3>
+            </div>
+            <div class="style-grid" role="radiogroup" aria-label="Choose a line style">
+              <button
+                class="style-option active"
+                type="button"
+                role="radio"
+                aria-checked="true"
+                data-mode="pencil"
+              >
+                <span class="style-art pencil-art" aria-hidden="true">
+                  <svg viewBox="0 0 84 46" fill="none">
+                    <path d="M9 37c12-5 15-11 27-10 9 1 12-8 21-15 7-5 12 3 17 13" />
+                    <path d="M23 37c8-6 15-8 22-5 7 2 11-1 17-8" />
+                    <circle cx="52" cy="12" r="3.5" />
+                  </svg>
+                </span>
+                <span>Pencil</span>
+                <small>Soft & organic</small>
+                <i class="radio-mark"></i>
+              </button>
+              <button
+                class="style-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+                data-mode="ink"
+              >
+                <span class="style-art ink-art" aria-hidden="true">
+                  <svg viewBox="0 0 84 46" fill="none">
+                    <path d="M8 37c12-4 15-12 28-11 11 1 13-7 20-13 6-5 12 0 18 7" />
+                    <path d="M21 38c8-5 15-7 23-4 6 2 10-1 16-7" />
+                    <circle cx="52" cy="12" r="3.5" />
+                  </svg>
+                </span>
+                <span>Ink</span>
+                <small>Crisp contours</small>
+                <i class="radio-mark"></i>
+              </button>
+              <button
+                class="style-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+                data-mode="sketch"
+              >
+                <span class="style-art sketch-art" aria-hidden="true">
+                  <svg viewBox="0 0 84 46" fill="none">
+                    <path d="M9 36c13-5 17-11 28-9 8 1 12-9 20-15 7-5 12 4 16 15" />
+                    <path d="M22 38c9-7 16-8 23-5 7 3 11-1 17-9" />
+                    <path d="M45 24c3-2 6-1 8 2M36 29c-2-1-4 0-6 3" />
+                    <circle cx="52" cy="12" r="3.5" />
+                  </svg>
+                </span>
+                <span>Soft Sketch</span>
+                <small>Light & shade</small>
+                <i class="radio-mark"></i>
+              </button>
+            </div>
+          </section>
+
+          <section class="control-section" aria-labelledby="tuneTitle">
+            <div class="section-title">
+              <h3 id="tuneTitle"><span>03</span> Fine tune</h3>
+              <button class="tiny-reset" id="tuneReset" type="button">Reset</button>
+            </div>
+
+            <div class="sliders">
+              <label class="range-control" for="intensityRange">
+                <span class="range-heading">
+                  <span>Ink weight</span>
+                  <output id="intensityOutput" for="intensityRange">72</output>
+                </span>
+                <input id="intensityRange" type="range" min="10" max="100" value="72" />
+              </label>
+
+              <label class="range-control" for="detailRange">
+                <span class="range-heading">
+                  <span>Detail</span>
+                  <output id="detailOutput" for="detailRange">45</output>
+                </span>
+                <input id="detailRange" type="range" min="15" max="100" value="45" />
+              </label>
+
+              <label class="range-control" for="thicknessRange">
+                <span class="range-heading">
+                  <span>Line width</span>
+                  <output id="thicknessOutput" for="thicknessRange">Balanced</output>
+                </span>
+                <input id="thicknessRange" type="range" min="1" max="3" value="2" />
+              </label>
+            </div>
+
+            <label class="switch-row" for="cleanupToggle">
+              <span>
+                <strong>Remove specks</strong>
+                <small>Recommended for busy photos</small>
+              </span>
+              <input id="cleanupToggle" type="checkbox" checked />
+              <i class="switch-track" aria-hidden="true"><span></span></i>
+            </label>
+          </section>
+
+          <section class="control-section appearance-section" aria-labelledby="appearanceTitle">
+            <div class="section-title">
+              <h3 id="appearanceTitle"><span>04</span> Appearance</h3>
+            </div>
+
+            <div class="appearance-grid">
+              <div class="appearance-block">
+                <span class="appearance-label">Line color</span>
+                <div class="color-swatches" role="radiogroup" aria-label="Line color">
+                  <button
+                    class="color-swatch active"
+                    type="button"
+                    data-color="#22211f"
+                    style="--swatch: #22211f"
+                    aria-label="Ink black"
+                    role="radio"
+                    aria-checked="true"
+                  ></button>
+                  <button
+                    class="color-swatch"
+                    type="button"
+                    data-color="#314f75"
+                    style="--swatch: #314f75"
+                    aria-label="Blueprint blue"
+                    role="radio"
+                    aria-checked="false"
+                  ></button>
+                  <button
+                    class="color-swatch"
+                    type="button"
+                    data-color="#7b4b35"
+                    style="--swatch: #7b4b35"
+                    aria-label="Sepia"
+                    role="radio"
+                    aria-checked="false"
+                  ></button>
+                  <label class="custom-color" title="Custom line color">
+                    <input id="customColor" type="color" value="#22211f" aria-label="Custom line color" />
+                    <span aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none">
+                        <path d="M8 3v10M3 8h10" />
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="appearance-block">
+                <span class="appearance-label">Paper</span>
+                <div class="paper-options" role="radiogroup" aria-label="Paper background">
+                  <button
+                    class="paper-option warm active"
+                    type="button"
+                    data-background="#fbf8f0"
+                    role="radio"
+                    aria-checked="true"
+                    title="Warm paper"
+                  ></button>
+                  <button
+                    class="paper-option white"
+                    type="button"
+                    data-background="#ffffff"
+                    role="radio"
+                    aria-checked="false"
+                    title="White paper"
+                  ></button>
+                  <button
+                    class="paper-option transparent"
+                    type="button"
+                    data-background="transparent"
+                    role="radio"
+                    aria-checked="false"
+                    title="Transparent background"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="control-actions">
+            <button class="primary-button" id="convertButton" type="button" disabled>
+              <span class="spark-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="M10 2.5c.5 4.8 2.7 7 7.5 7.5-4.8.5-7 2.7-7.5 7.5-.5-4.8-2.7-7-7.5-7.5 4.8-.5 7-2.7 7.5-7.5Z" />
+                </svg>
+              </span>
+              <span id="convertButtonLabel">Generate line art</span>
+              <span class="button-key">↵</span>
+            </button>
+            <button class="secondary-button" id="downloadButton" type="button" disabled>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 14.5v1A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5v-1" />
+              </svg>
+              Download PNG
+            </button>
+          </div>
+        </aside>
+
+        <section class="preview-panel" id="previewPanel" aria-labelledby="previewTitle">
+          <div class="preview-toolbar">
+            <div class="preview-heading">
+              <span class="panel-kicker">ARTWORK BOARD</span>
+              <div>
+                <h2 id="previewTitle">Preview</h2>
+                <span class="preview-status" id="previewStatus">
+                  <i></i>
+                  Awaiting image
+                </span>
+              </div>
+            </div>
+
+            <div class="preview-tools">
+              <div class="view-switch" role="group" aria-label="Preview mode">
+                <button class="active" type="button" data-view="split" title="Side-by-side view">
+                  <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="2.5" y="3" width="5.5" height="12" rx="1" />
+                    <rect x="10" y="3" width="5.5" height="12" rx="1" />
+                  </svg>
+                  Split
+                </button>
+                <button type="button" data-view="overlay" title="Slider comparison">
+                  <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="2.5" y="3" width="13" height="12" rx="1" />
+                    <path d="M9 1.8v14.4" />
+                  </svg>
+                  Compare
+                </button>
+              </div>
+              <button class="tool-icon-button" id="fullscreenButton" type="button" title="Fullscreen preview" aria-label="Fullscreen preview">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M7 3H3v4m10-4h4v4M7 17H3v-4m10 4h4v-4" />
+                </svg>
+              </button>
+              <button class="toolbar-download" id="toolbarDownloadButton" type="button" disabled>
+                <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M9 2.5v8m0 0 3-3M9 10.5l-3-3M3.5 13.5v1a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1" />
+                </svg>
+                Export
+              </button>
+            </div>
+          </div>
+
+          <div class="canvas-board" id="canvasBoard">
+            <div class="board-ruler ruler-top" aria-hidden="true">
+              <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+            </div>
+            <div class="board-ruler ruler-left" aria-hidden="true">
+              <span>25</span><span>50</span><span>75</span>
+            </div>
+
+            <div class="preview-grid" id="previewGrid">
+              <figure class="image-frame original-frame">
+                <figcaption>
+                  <span><i>01</i> Original</span>
+                  <small>ORIGINAL</small>
+                </figcaption>
+                <div class="image-well" id="originalWell">
+                  <img id="originalImage" alt="Uploaded original" hidden />
+                  <div class="empty-art empty-original" id="originalEmpty">
+                    <span>
+                      <svg viewBox="0 0 58 58" fill="none" aria-hidden="true">
+                        <rect x="8" y="11" width="42" height="36" rx="3" />
+                        <circle cx="21" cy="23" r="4" />
+                        <path d="m11 41 12-11 9 8 7-6 9 8" />
+                      </svg>
+                    </span>
+                    <p>Original</p>
+                    <small>Your image appears here</small>
+                  </div>
+                </div>
+                <div class="frame-footer">
+                  <span id="originalDimensions">—</span>
+                  <span id="originalFileSize">—</span>
+                </div>
+              </figure>
+
+              <figure class="image-frame result-frame" id="resultFrame">
+                <figcaption>
+                  <span><i>02</i> Line art</span>
+                  <small>LINE ART</small>
+                </figcaption>
+                <div class="image-well" id="resultWell">
+                  <canvas id="resultCanvas" aria-label="Generated line art"></canvas>
+                  <div class="empty-art empty-result" id="resultEmpty">
+                    <span>
+                      <svg viewBox="0 0 58 58" fill="none" aria-hidden="true">
+                        <path d="M17 41c9-2 14-8 17-17 2-6 7-8 13-6" />
+                        <path d="M13 46c12-2 20-8 25-18 3-7 8-9 15-7" />
+                        <path d="M12 13h5M14.5 10.5v5" />
+                      </svg>
+                    </span>
+                    <p>Line art</p>
+                    <small>Upload to start automatically</small>
+                  </div>
+                </div>
+                <div class="frame-footer">
+                  <span id="resultDimensions">—</span>
+                  <span id="processingTime">—</span>
+                </div>
+              </figure>
+
+              <div class="overlay-compare" id="overlayCompare" hidden>
+                <img id="overlayOriginal" alt="Original" />
+                <div class="overlay-result" id="overlayResult">
+                  <canvas id="overlayCanvas" aria-label="Line art comparison"></canvas>
+                </div>
+                <div class="compare-line" id="compareLine">
+                  <span class="compare-handle">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="m9 7-5 5 5 5M15 7l5 5-5 5" />
+                    </svg>
+                  </span>
+                  <span>Original</span>
+                  <span>Line art</span>
+                </div>
+                <div class="overlay-label overlay-label-left">Original</div>
+                <div class="overlay-label overlay-label-right">Line art</div>
+              </div>
+            </div>
+
+            <div class="processing-overlay" id="processingOverlay" hidden>
+              <div class="processing-card">
+                <div class="ink-loader" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                  <svg viewBox="0 0 64 64" fill="none">
+                    <path d="M12 46c12-3 19-10 23-22 3-8 9-11 17-9" />
+                  </svg>
+                </div>
+                <div class="processing-copy">
+                  <strong id="processingTitle">Preparing canvas...</strong>
+                  <span id="processingDetail">Tracing contours</span>
+                </div>
+                <div class="progress-track"><i id="progressBar"></i></div>
+                <span class="progress-value" id="progressValue">0%</span>
+              </div>
+            </div>
+
+            <div class="drop-active" id="dropOverlay" hidden>
+              <span>
+                <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                  <path d="M24 33V11m0 0-8 8m8-8 8 8M10 30v4a4 4 0 0 0 4 4h20a4 4 0 0 0 4-4v-4" />
+                </svg>
+              </span>
+              Drop to open
+            </div>
+          </div>
+
+          <div class="preview-footer">
+            <div class="footer-tip">
+              <span class="tip-number">TIP</span>
+              <p>Busy photos: keep Remove specks on. Portraits: start with Pencil.</p>
+            </div>
+            <div class="shortcut-hints" aria-label="Keyboard shortcuts">
+              <span><kbd>Ctrl</kbd><kbd>O</kbd> Open</span>
+              <span><kbd>Ctrl</kbd><kbd>S</kbd> Download</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <footer class="site-footer">
+        <p>LineTrail · Image-to-line studio</p>
+        <p>100% local processing <span>© 2026 LINETRAIL STUDIO</span></p>
+      </footer>
+    </main>
+
+    <dialog class="help-dialog" id="helpDialog">
+      <button class="dialog-close" id="dialogCloseButton" type="button" aria-label="Close instructions">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="m4 4 12 12M16 4 4 16" />
+        </svg>
+      </button>
+      <p class="panel-kicker">HOW IT WORKS</p>
+      <h2>Three steps to line art.</h2>
+      <div class="help-steps">
+        <article>
+          <span>01</span>
+          <strong>Add an image</strong>
+          <p>Click, drop, or paste an image. A first draft is created automatically.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <strong>Choose a style</strong>
+          <p>Pick Pencil, Ink, or Soft Sketch, then fine-tune lines and detail.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <strong>Export</strong>
+          <p>Set color and paper, then download a high-resolution PNG.</p>
+        </article>
+      </div>
+      <div class="dialog-note">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M10 2.5 3.5 5v4.4c0 3.8 2.6 6.7 6.5 8.1 3.9-1.4 6.5-4.3 6.5-8.1V5L10 2.5Z" />
+          <path d="m7.2 10 1.8 1.8 3.8-4" />
+        </svg>
+        <p>
+          <strong>Privacy</strong>
+          Processing runs entirely in your browser. Images are never sent to a server.
+          Supports JPG, PNG, WebP, GIF, SVG, AVIF, and other formats your browser can decode.
+        </p>
+      </div>
+    </dialog>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./line-art.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "linetrail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turn any image into clean line art locally in your browser.",
+  "homepage": "https://zhuanght-1201.github.io/linetrail/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhuangHT-1201/linetrail.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ZhuangHT-1201/linetrail/issues"
+  },
+  "keywords": [
+    "line-art",
+    "image-processing",
+    "canvas",
+    "sketch",
+    "browser"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build && node scripts/postbuild.mjs",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.7"
+  }
+}
